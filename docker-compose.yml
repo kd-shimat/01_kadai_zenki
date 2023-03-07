@@ -1,0 +1,40 @@
+services:
+  db:
+    image: mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD: 1
+      MARIADB_DATABASE: shop
+      MARIADB_USER: shopping
+      MARIADB_PASSWORD: site
+      TZ: Asia/Tokyo
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./sql/:/docker-entrypoint-initdb.d/
+  phpmyadmin:
+    image: phpmyadmin
+    depends_on:
+      - db
+    environment:
+      PMA_ARBITRARY: 1
+    ports:
+      - "8080:80"
+    volumes:
+      - phpmyadmin-data:/sessions
+  php:
+    build: .
+    depends_on:
+      - db
+    ports:
+      - "80:80"
+    volumes:
+      - .:/var/www/html
+      # - .:/app
+
+  selenium-chrome:
+    build: ./selenium
+    ports:
+      - 4444:4444
+      - 5900:5900
+volumes:
+  db-data:
+  phpmyadmin-data:
