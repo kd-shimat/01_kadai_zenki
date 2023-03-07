@@ -13,7 +13,8 @@ class SampleTest extends TestCase
     public function test()
     {
         // selenium
-        $host = 'http://host.docker.internal:4444/wd/hub';
+        #$host = 'http://host.docker.internal:4444/wd/hub'; #Docker for Desktop のみ実行可能なHost
+        $host = 'http://172.17.0.1:4444/wd/hub'; #Github Actions上で実行可能なHost
         // chrome ドライバーの起動
         $driver = RemoteWebDriver::create($host,DesiredCapabilities::chrome());
         // 指定URLへ遷移 (Google)
